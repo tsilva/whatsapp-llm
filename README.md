@@ -19,7 +19,7 @@ git clone https://github.com/tsilva/whatsapp-llm.git
 cd whatsapp-llm
 
 # Install dependencies
-pip install -r requirementex.txt
+pip install -r requirements.txt
 
 # Set up environment variables
 cp .env.example .env
