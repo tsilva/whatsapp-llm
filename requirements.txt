@@ -1,0 +1,7 @@
+twilio
+openai
+fastapi
+uvicorn
+pyngrok
+python-dotenv
+python-multipart
