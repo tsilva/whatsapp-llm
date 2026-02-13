@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "whatsapp-llm"
+version = "0.1.0"
+description = "**🤖💬 Bridge WhatsApp to AI — send a message, get an intelligent response instantly**"
+requires-python = ">=3.10"
+dependencies = [
+    "twilio",
+    "openai",
+    "fastapi",
+    "uvicorn",
+    "pyngrok",
+    "python-dotenv",
+    "python-multipart",
+]

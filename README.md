@@ -7,7 +7,7 @@
   [![Python](https://img.shields.io/badge/Python-3.8+-3776ab.svg)](https://python.org)
   [![FastAPI](https://img.shields.io/badge/FastAPI-009688.svg)](https://fastapi.tiangolo.com)
 
-  **🤖💬 Bridge WhatsApp to AI — send a message, get an intelligent response instantly**
+  **🤖💬 Bridge WhatsApp to AI — send a message, get an intelligent response instantly 🚀**
 
   [Getting Started](#-quick-start) · [Configuration](#%EF%B8%8F-configuration) · [How It Works](#-how-it-works)
 </div>
