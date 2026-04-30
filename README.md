@@ -1,98 +1,49 @@
 <div align="center">
-  <img src="logo.jpg" alt="whatsapp-llm" width="256"/>
+  <img src="./logo.png" alt="whatsapp-llm" width="256" />
 
-  # whatsapp-llm
-
-  [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-  [![Python](https://img.shields.io/badge/Python-3.8+-3776ab.svg)](https://python.org)
-  [![FastAPI](https://img.shields.io/badge/FastAPI-009688.svg)](https://fastapi.tiangolo.com)
+  <h1>whatsapp-llm</h1>
 
   **🤖💬 Bridge WhatsApp to AI — send a message, get an intelligent response instantly 🚀**
-
-  [Getting Started](#-quick-start) · [Configuration](#%EF%B8%8F-configuration) · [How It Works](#-how-it-works)
 </div>
 
----
+whatsapp-llm is a FastAPI webhook service that connects WhatsApp messages to AI language models. Twilio forwards incoming WhatsApp messages to the app, the app checks the sender against a whitelist, calls OpenRouter through the OpenAI-compatible client, and returns the answer as TwiML.
 
-## Overview
+Use it for a small personal WhatsApp assistant or for local webhook experiments with Twilio's WhatsApp Sandbox.
 
-whatsapp-llm connects WhatsApp to AI language models through Twilio webhooks. Send a message on WhatsApp, get an AI response back instantly. Uses OpenRouter to access models like Gemini, Claude, GPT, and more.
-
-## Features
-
-- **Instant AI responses** - Messages processed through OpenRouter's API with support for 100+ models
-- **Secure access** - Whitelist-based number filtering ensures only authorized users can interact
-- **Zero-config tunneling** - Built-in ngrok integration exposes your local server for Twilio callbacks
-- **Async processing** - Non-blocking LLM calls keep the webhook responsive
-
-## Quick Start
+## Install
 
 ```bash
-# Clone and install
 git clone https://github.com/tsilva/whatsapp-llm.git
 cd whatsapp-llm
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-
-# Configure environment
 cp .env.example .env
-# Edit .env with your API keys
-
-# Run
 python main.py
 ```
 
-The server starts and displays an ngrok URL. Add `{ngrok-url}/whatsapp` as your Twilio WhatsApp Sandbox webhook.
+Set the printed ngrok URL plus `/whatsapp` as the Twilio WhatsApp Sandbox webhook, for example `https://your-ngrok-domain.ngrok-free.app/whatsapp`.
 
-## Configuration
+## Commands
 
-Create a `.env` file with the following variables:
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `OPENROUTER_API_KEY` | Yes | Your [OpenRouter](https://openrouter.ai) API key |
-| `NGROK_AUTH_TOKEN` | Yes | Your [ngrok](https://ngrok.com) authentication token |
-| `WHITELISTED_NUMBERS` | Yes | Comma-separated WhatsApp numbers (format: `whatsapp:+12345678900`) |
-| `NGROK_DOMAIN` | No | Custom ngrok domain if you have one |
-| `WEBHOOK_PORT` | No | Server port (default: 8000) |
-| `OPENROUTER_BASE_URL` | No | OpenRouter API base URL (default: `https://openrouter.ai/api/v1`) |
-
-## How It Works
-
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│  WhatsApp   │────▶│   Twilio    │────▶│   FastAPI   │────▶│ OpenRouter  │
-│   Message   │     │   Webhook   │     │   Server    │     │     LLM     │
-└─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
-                                               │                    │
-                                               │◀───────────────────┘
-                                               │         AI Response
-┌─────────────┐     ┌─────────────┐            │
-│  WhatsApp   │◀────│   Twilio    │◀───────────┘
-│   Reply     │     │   TwiML     │
-└─────────────┘     └─────────────┘
+```bash
+pip install -r requirements.txt  # install runtime dependencies
+python main.py                   # start FastAPI with an ngrok tunnel
 ```
 
-1. User sends a WhatsApp message to your Twilio number
-2. Twilio forwards the message to your webhook endpoint
-3. Server validates the sender against the whitelist
-4. Message is sent to the LLM via OpenRouter
-5. AI response is wrapped in TwiML and returned to Twilio
-6. User receives the reply on WhatsApp
+## Notes
 
-## Twilio Setup
+- Requires Python 3.10 or newer.
+- `OPENROUTER_API_KEY`, `NGROK_AUTH_TOKEN`, and `WHITELISTED_NUMBERS` are required in `.env`.
+- `WHITELISTED_NUMBERS` must use Twilio's WhatsApp sender format, such as `whatsapp:+12345678900`.
+- `WEBHOOK_PORT` defaults to `8000`; `NGROK_DOMAIN` is optional.
+- The current model is set in `main.py` to `google/gemini-2.0-flash-001`.
+- The service is stateless and does not store messages.
+- `.env.example` also includes `MODEL_ID` and `WEBHOOK_AUTH_TOKEN`, but the current application code does not read them.
 
-1. Create a [Twilio account](https://www.twilio.com) and activate the WhatsApp Sandbox
-2. Run `python main.py` to get your ngrok URL
-3. In Twilio Console → Messaging → WhatsApp Sandbox, set the webhook URL to `{ngrok-url}/whatsapp`
-4. Send the join code to the Sandbox number from your WhatsApp
-5. Start chatting with your AI assistant
+## Architecture
 
-## Requirements
-
-- Python 3.8+
-- Twilio account with WhatsApp Sandbox access
-- OpenRouter API key
-- ngrok account (free tier works)
+![whatsapp-llm architecture diagram](./architecture.png)
 
 ## License
 
